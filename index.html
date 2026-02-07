@@ -6,24 +6,30 @@
 <title>Valentine</title>
 
 <style>
+/* ===== Body & Background ===== */
 body{
     margin:0;
-    background: url(https://github.com/surajmagar135/unique/blob/main/code/ram.jpeg) no-repeat center center; /* <-- background image */
-    background-size: cover;
     height:100vh;
     overflow:hidden;
     display:flex;
     justify-content:center;
-    align-items:center;
-    font-family:Arial;
+    align-items:flex-end; /* card at bottom */
+    padding-bottom:50px;  /* space from bottom */
+    font-family:Arial, sans-serif;
     user-select:none;
+
+    /* Background image */
+    background-image: url('https://raw.githubusercontent.com/surajmagar135/unique/main/code/ram.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-/* Hearts */
+/* ===== Hearts floating ===== */
 .heart{
     position:fixed;
     bottom:-20px;
-    font-size:20px;
+    font-size:18px;
     animation: floatUp linear infinite;
     opacity:0.7;
 }
@@ -32,23 +38,31 @@ body{
     to{ transform:translateY(-110vh); }
 }
 
-/* Card */
+/* ===== Card (bottom box) ===== */
 .card{
-    background:white;
-    padding:30px 20px;
+    background: rgba(255,255,255,0.2); /* very transparent */
+    backdrop-filter: blur(18px);       /* strong blur */
+    padding:12px 10px;
     border-radius:15px;
     text-align:center;
     position:relative;
-    width:90%;
-    max-width:350px;
-    height:280px;
+    width:70%;
+    max-width:240px;
+    height:180px;
     overflow:hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-/* Buttons */
+/* ===== Card content spacing ===== */
+.card h2{
+    margin:10px 0 25px 0;
+    font-size:16px;
+}
+
+/* ===== Buttons ===== */
 button{
-    padding:12px 25px;
-    font-size:18px;
+    padding:8px 16px;
+    font-size:14px;
     border:none;
     border-radius:8px;
     cursor:pointer;
@@ -60,8 +74,8 @@ button{
     color:white;
     animation:pulse 1.5s infinite;
     position:absolute;
-    left:20px;
-    top:160px;
+    left:15px;
+    top:110px;
 }
 
 @keyframes pulse{
@@ -74,14 +88,21 @@ button{
     background:gray;
     color:white;
     position:absolute;
-    left:220px;
-    top:160px;
+    left:130px;
+    top:110px;
 }
 
-#hurray{display:none;font-size:26px;color:#ff0055;margin-top:15px;}
-#final-msg{display:none;font-size:22px;color:#ff0055;margin-top:5px;}
-#smirk{position:absolute;font-size:22px;display:none;}
-#kiss{position:absolute;top:15px;right:15px;font-size:24px;display:none;}
+/* ===== Messages ===== */
+#hurray, #final-msg{
+    display:none;
+    color:#ff0055;
+}
+
+#hurray{ font-size:18px; margin-top:8px; }
+#final-msg{ font-size:14px; margin-top:4px; }
+
+#smirk{position:absolute;font-size:18px;display:none;}
+#kiss{position:absolute;top:6px;right:6px;font-size:20px;display:none;}
 </style>
 </head>
 
@@ -103,11 +124,11 @@ button{
     <p id="currentTime"></p>
 </div>
 
-<!-- Free online Howler library for sounds -->
+<!-- Sounds -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 
 <script>
-/* 🎵 ONLINE LIGHT SOUNDS */
+// 🎵 Sounds
 const happySound = new Howl({
   src: ['https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg'],
   volume:0.5
@@ -117,24 +138,22 @@ const sadClickSound = new Howl({
   volume:0.5
 });
 
-/* ---------- ELEMENTS ---------- */
+// ===== Elements =====
 const yesBtn=document.getElementById("yes");
 const noBtn=document.getElementById("no");
 const card=document.getElementById("card");
 const smirk=document.getElementById("smirk");
 const kiss=document.getElementById("kiss");
 
-/* ---------- VIBRATION ---------- */
+// ===== Vibration helper =====
 function vibrate(ms){ if(navigator.vibrate) navigator.vibrate(ms); }
 
-/* ---------- YES CLICK ---------- */
+// ===== YES click =====
 yesBtn.onclick=()=>{
     vibrate(120);
     yesBtn.style.transform="scale(1.2)";
     setTimeout(()=>yesBtn.style.transform="scale(1)",200);
-
     happySound.play();
-
     document.getElementById("hurray").style.display="block";
     document.getElementById("final-msg").style.display="block";
     noBtn.style.display="none";
@@ -142,47 +161,36 @@ yesBtn.onclick=()=>{
     kiss.style.display="block";
 };
 
-/* ---------- NO HOVER (run away + vibration, no sound) ---------- */
+// ===== NO button movement =====
 function moveNo(){
     vibrate(80);
-
     const yesRect = yesBtn.getBoundingClientRect();
-
     let x,y,overlap;
     do{
         x = Math.random() * (card.clientWidth - noBtn.offsetWidth);
         y = Math.random() * (card.clientHeight - noBtn.offsetHeight - 40) + 40;
-
         x = Math.max(0, Math.min(x, card.clientWidth - noBtn.offsetWidth));
         y = Math.max(40, Math.min(y, card.clientHeight - noBtn.offsetHeight));
-
         noBtn.style.left = x + "px";
         noBtn.style.top  = y + "px";
-
         const n=noBtn.getBoundingClientRect();
-        overlap = !(
-            n.right < yesRect.left ||
-            n.left  > yesRect.right ||
-            n.bottom< yesRect.top  ||
-            n.top   > yesRect.bottom
-        );
+        overlap = !(n.right < yesRect.left || n.left > yesRect.right || n.bottom< yesRect.top || n.top > yesRect.bottom);
     }while(overlap);
 
     smirk.style.display="block";
-    smirk.style.left=(x+40)+"px";
+    smirk.style.left=(x+25)+"px";
     smirk.style.top=y+"px";
 }
 
 noBtn.addEventListener("mouseenter", moveNo);
 noBtn.addEventListener("touchstart",(e)=>{ e.preventDefault(); moveNo(); });
 
-/* NO click → light sad sound + vibration */
 noBtn.addEventListener("click", ()=>{
     sadClickSound.play();
     vibrate(150);
 });
 
-/* ---------- Hearts floating ---------- */
+// ===== Hearts animation =====
 setInterval(()=>{
     const h=document.createElement("div");
     h.className="heart";
@@ -193,7 +201,7 @@ setInterval(()=>{
     setTimeout(()=>h.remove(),7000);
 },500);
 
-/* ---------- Time display ---------- */
+// ===== Time display =====
 function updateTime(){
     document.getElementById("currentTime").innerText = new Date().toLocaleTimeString();
 }
@@ -203,6 +211,3 @@ updateTime();
 
 </body>
 </html>
-
-
-
