@@ -138,6 +138,12 @@ const sadClickSound = new Howl({
   volume:0.5
 });
 
+// ===== Love music (plays only on YES click) =====
+const loveMusic = new Howl({
+    src: ['https://raw.githubusercontent.com/surajmagar135/unique/main/love.mp3'],  // raw GitHub URL
+    volume:0.7
+});
+
 // ===== Elements =====
 const yesBtn=document.getElementById("yes");
 const noBtn=document.getElementById("no");
@@ -154,6 +160,7 @@ yesBtn.onclick=()=>{
     yesBtn.style.transform="scale(1.2)";
     setTimeout(()=>yesBtn.style.transform="scale(1)",200);
     happySound.play();
+    loveMusic.play(); // play love.mp3
     document.getElementById("hurray").style.display="block";
     document.getElementById("final-msg").style.display="block";
     noBtn.style.display="none";
@@ -211,4 +218,3 @@ updateTime();
 
 </body>
 </html>
-
