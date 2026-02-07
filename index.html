@@ -14,15 +14,15 @@ body{
     display:flex;
     justify-content:center;
     align-items:flex-end; /* card at bottom */
-    padding-bottom:50px;  /* space from bottom */
+    padding-bottom:50px;
     font-family:Arial, sans-serif;
     user-select:none;
 
-    /* Background image */
+    /* Background image slightly smaller */
     background-image: url('https://raw.githubusercontent.com/surajmagar135/unique/main/code/ram.jpg');
-    background-size: contain;        /* fit full image without zoom */
-    background-position: center;     /* center the image */
-    background-repeat: no-repeat;    /* no tiling */
+    background-size: 90% auto;      /* 90% width, automatic height */
+    background-position: center;    /* center the image */
+    background-repeat: no-repeat;   /* no tiling */
 }
 
 /* ===== Hearts floating ===== */
@@ -130,7 +130,7 @@ button{
 <script>
 // 🎵 Sounds
 const happySound = new Howl({
-  src: ['https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg'], // you can replace with your Pixabay "Yes" sound
+  src: ['https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg'],
   volume:0.5
 });
 const sadClickSound = new Howl({
